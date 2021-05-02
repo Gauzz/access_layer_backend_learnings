@@ -16,6 +16,7 @@ router.post('/register', async (req, res) => {
             if (user.data) {
                 let isPassword = await isValidPassword(req.body.password, user.data.password);
                 if (!isPassword) {
+                    updateUserLoginLog(user._id, ENUMS.USERLOGINSTATUS.FAILED);
                     res.send({ status: RESPONSE_STATUS.STATUS_FAIL, message: MESSAGE.INVALID_PASSWORD });
                 } else {
                     updateUserLoginLog(user._id, ENUMS.USERLOGINSTATUS.PASSED);
