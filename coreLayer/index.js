@@ -1,17 +1,20 @@
 require('dotenv').config({ path: __dirname + '/.env' });
 const express = require('express');
 const mongoose = require('mongoose');
+var fileRoute = require('./routes/fileRoute');
 var userRoute = require('./routes/userRoute');
 var userLoginRoute = require('./routes/userLoginRoute');
 const { genericErrorHandler, unknownRoutesHandler } = require('./handlers/error/errorHandler');
 
 var app = express();
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ limit: "50mb", extended: true, }));
+app.use(express.json({ limit: "50mb", extended: true }));
+
 
 //DEV routes
 app.use('/core/user', userRoute);
 app.use('/core/userLogin', userLoginRoute);
+app.use("/file", fileRoute);
 
 // this matches all routes and all methods
 app.use(unknownRoutesHandler);
